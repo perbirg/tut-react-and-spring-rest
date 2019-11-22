@@ -34,16 +34,21 @@ class App extends React.Component {
 class AFPBESkjema extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {pensjonsgrunnlagAP: '50 000 kr'};
 
-    this.handleChange = this.handleChange.bind(this);
+//    this.state = {pensjonsgrunnlagAP: '50 000 kr'};
+
+//    this.handleChange = this.handleChange.bind(this);
 //    this.handleSubmit = this.handleSubmit.bind(this);
+
+
   }
 
+/*
   handleChange(event) {
     console.log("AFPBESkjema::handleChange")
     this.setState({pensjonsgrunnlagAP: event.target.value});
   }
+*/
 
   handleSubmit(event) {
     //alert('Pensjonsgrunnlag AP angitt: ' + this.state.pensjonsgrunnlagAP);
@@ -53,10 +58,10 @@ class AFPBESkjema extends React.Component{
 
   render() {
     return (
-      <form onChange={() => this.props.onSubmit()}>
+      <form onSubmit={() => this.props.onSubmit()}>
         <label>
           Pensjonsgrunnlag AP:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          <input type="text" value={this.props.pensjonsgrunnlagAP} onChange={() => this.props.onChange(event)} />
         </label>
         <button type="button" onClick={() => this.props.onBeregn()}>Beregn</button>
         <input type="submit" value="Nullstill" />
@@ -96,6 +101,11 @@ class AFPBE extends React.Component{
        }
     }
 
+  handleChange(event) {
+    console.log("AFPBE::handleChange")
+    this.setState({pensjonsgrunnlagAP: event.target.value});
+  }
+
     onSubmitting() {
         console.log("onSubmit");
 
@@ -110,12 +120,25 @@ class AFPBE extends React.Component{
     onBeregn() {
         console.log("onBeregn");
 
-        this.setState(
+
+        client({method: 'GET', path: '/beregnAFPBE?pensjonsgrunnlagAP=' + this.state.pensjonsgrunnlagAP}).done(response => {
+                    var ytelse = response.entity;
+                    console.log("Nettoytelse = " + ytelse);
+        			this.setState(
+        			              {
+                                        pensjonsgrunnlagAP: this.state.pensjonsgrunnlagAP,
+                                        nettoytelse:  ytelse.nettoytelse,
+                                        bruttoytelse: ytelse.bruttoytelse
+                                    });
+        });
+
+/*        this.setState(
                {
                     pensjonsgrunnlagAP: "95 000 kr",
                     nettoytelse: "65 000 kr",
                     bruttoytelse:"65 000 kr"
                 });
+*/
     }
 
 
@@ -129,6 +152,7 @@ class AFPBE extends React.Component{
                   <AFPBESkjema
                     onSubmit={() => this.onSubmitting()}
                     onBeregn={() => this.onBeregn()}
+                    onChange={(event) => this.handleChange(event)}
                   />
                   <Ytelse
                     nettoytelse={nettoytelse}
