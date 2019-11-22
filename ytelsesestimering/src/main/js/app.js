@@ -34,25 +34,9 @@ class App extends React.Component {
 class AFPBESkjema extends React.Component{
   constructor(props) {
     super(props);
-
-//    this.state = {pensjonsgrunnlagAP: '50 000 kr'};
-
-//    this.handleChange = this.handleChange.bind(this);
-//    this.handleSubmit = this.handleSubmit.bind(this);
-
-
   }
-
-/*
-  handleChange(event) {
-    console.log("AFPBESkjema::handleChange")
-    this.setState({pensjonsgrunnlagAP: event.target.value});
-  }
-*/
 
   handleSubmit(event) {
-    //alert('Pensjonsgrunnlag AP angitt: ' + this.state.pensjonsgrunnlagAP);
-    //event.preventDefault();
     this.props.onYtelseEndret(e.target.value)
   }
 
@@ -73,7 +57,6 @@ class AFPBESkjema extends React.Component{
 class Ytelse extends React.Component{
     constructor(props) {
         super(props);
-
     }
 
     render() {
@@ -120,7 +103,6 @@ class AFPBE extends React.Component{
     onBeregn() {
         console.log("onBeregn");
 
-
         client({method: 'GET', path: '/beregnAFPBE?pensjonsgrunnlagAP=' + this.state.pensjonsgrunnlagAP}).done(response => {
                     var ytelse = response.entity;
                     console.log("Nettoytelse = " + ytelse);
@@ -131,14 +113,6 @@ class AFPBE extends React.Component{
                                         bruttoytelse: ytelse.bruttoytelse
                                     });
         });
-
-/*        this.setState(
-               {
-                    pensjonsgrunnlagAP: "95 000 kr",
-                    nettoytelse: "65 000 kr",
-                    bruttoytelse:"65 000 kr"
-                });
-*/
     }
 
 
@@ -165,8 +139,6 @@ class AFPBE extends React.Component{
 
 
 }
-
-
 
 
 // tag::employee-list[]
